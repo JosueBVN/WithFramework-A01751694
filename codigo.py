@@ -7,6 +7,10 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.tree import plot_tree
+
+# Definir una variable global para random_state
+random_seed = 42
 
 # Cargar el conjunto de datos Iris
 iris = load_iris()
@@ -18,10 +22,10 @@ class_names = iris.target_names
 iris_df = pd.DataFrame(data=np.c_[iris['data'], iris['target']], columns=iris['feature_names'] + ['target'])
 
 # Dividir el conjunto de datos en entrenamiento (70%) y prueba (30%)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=random_seed)
 
 # Crear y entrenar el modelo de Árbol de Decisiones
-clf = DecisionTreeClassifier(random_state=42)
+clf = DecisionTreeClassifier(random_state=random_seed)
 clf.fit(X_train, y_train)
 
 # Realizar predicciones en el conjunto de prueba
@@ -40,11 +44,10 @@ print('\nInforme de Clasificación:')
 print(classification_rep)
 
 # Visualizar el árbol de decisiones (opcional)
-from sklearn.tree import plot_tree
 plt.figure(figsize=(12, 8))
 plot_tree(clf, filled=True, feature_names=iris.feature_names, class_names=list(class_names), rounded=True)
+plt.title('Árbol de Decisiones')
 plt.show()
-
 
 # Visualizar la matriz de confusión (opcional)
 plt.figure(figsize=(8, 6))
@@ -53,4 +56,3 @@ plt.xlabel('Predicción')
 plt.ylabel('Valor Real')
 plt.title('Matriz de Confusión')
 plt.show()
-
